@@ -16,13 +16,18 @@
 
 package com.example.android.dagger.registration
 
+import android.util.Log
+import com.example.android.dagger.BuildConfig
+import com.example.android.dagger.di.ActivityScope
 import com.example.android.dagger.user.UserManager
+import javax.inject.Inject
 
 /**
  * RegistrationViewModel is the ViewModel that the Registration flow ([RegistrationActivity]
  * and fragments) uses to keep user's input data.
  */
-class RegistrationViewModel(val userManager: UserManager) {
+@ActivityScope
+class RegistrationViewModel @Inject constructor(val userManager: UserManager) {
 
     private var username: String? = null
     private var password: String? = null
@@ -38,10 +43,22 @@ class RegistrationViewModel(val userManager: UserManager) {
     }
 
     fun registerUser() {
-        assert(username != null)
-        assert(password != null)
-        assert(acceptedTCs == true)
+        if (BuildConfig.DEBUG && username == null) {
+            error("Assertion failed")
+        }
+        Log.i("RegistrationViewModel", "1")
+        if (BuildConfig.DEBUG && password == null) {
+            error("Assertion failed")
+        }
+        Log.i("RegistrationViewModel", "2")
+        if (BuildConfig.DEBUG && acceptedTCs != true) {
+            error("Assertion failed")
+        }
+        Log.i("RegistrationViewModel", "3")
 
+        if (userManager == null) {
+            Log.i("RegistrationViewModel", "4")
+        }
         userManager.registerUser(username!!, password!!)
     }
 }

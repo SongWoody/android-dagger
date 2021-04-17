@@ -16,7 +16,11 @@
 
 package com.example.android.dagger.user
 
+import android.util.Log
 import com.example.android.dagger.storage.Storage
+import javax.inject.Inject
+import javax.inject.Singleton
+
 
 private const val REGISTERED_USER = "registered_user"
 private const val PASSWORD_SUFFIX = "password"
@@ -25,7 +29,12 @@ private const val PASSWORD_SUFFIX = "password"
  * Handles User lifecycle. Manages registrations, logs in and logs out.
  * Knows when the user is logged in.
  */
-class UserManager(private val storage: Storage) {
+@Singleton
+class UserManager @Inject constructor(private val storage: Storage) {
+
+    init {
+        Log.i("UserManager", "init")
+    }
 
     /**
      *  UserDataRepository is specific to a logged in user. This determines if the user
@@ -49,9 +58,11 @@ class UserManager(private val storage: Storage) {
 
     fun loginUser(username: String, password: String): Boolean {
         val registeredUser = this.username
+        Log.i("UserManager", "this.username ${this.username}")
         if (registeredUser != username) return false
 
         val registeredPassword = storage.getString("$username$PASSWORD_SUFFIX")
+        Log.i("UserManager", "registeredPassword $registeredPassword")
         if (registeredPassword != password) return false
 
         userJustLoggedIn()
