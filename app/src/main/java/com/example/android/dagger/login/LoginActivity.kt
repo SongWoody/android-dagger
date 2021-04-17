@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var errorTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
+        (application as MyApplication).appComponent.loginComponent().create().inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
